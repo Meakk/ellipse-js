@@ -113,7 +113,7 @@ var Ellipse = (function() {
 	var my = function(arg) {
 		this.equation = {a:0, b:0, c:0, d:0, e:0, f:0};
 	
-		this.setFromEquation(a, b, c, d, e, f) {
+		this.setFromEquation = function(a, b, c, d, e, f) {
 			this.equation.a = a;
 			this.equation.b = b;
 			this.equation.c = c;
@@ -122,7 +122,7 @@ var Ellipse = (function() {
 			this.equation.f = f;
 		}
 	
-		this.setFromPoints(u) {
+		this.setFromPoints = function(u){
 			//compute sums
 			var Sxxxx = u.reduce(function(p, c) { return p + c.x * c.x * c.x * c.x; }, 0);
 			var Sxxxy = u.reduce(function(p, c) { return p + c.x * c.x * c.x * c.y; }, 0);
