@@ -111,7 +111,7 @@ var Ellipse = (function() {
 	}
 
 	var my = function(arg) {
-		this.equation = {a:0, b:0, c:0, d:0, e:0, f:0};
+		this.equation = {a:0, b:0, c:0, d:0, e:0, f:0, angle:0};
 	
 		this.setFromEquation = function(a, b, c, d, e, f) {
 			this.equation.a = a;
@@ -120,6 +120,17 @@ var Ellipse = (function() {
 			this.equation.d = d;
 			this.equation.e = e;
 			this.equation.f = f;
+			this.equation.angle = 0;
+		}
+		
+		this.setFromReducedEquation = function(a, c, d, e, f, angle) {
+			this.equation.a = a;
+			this.equation.b = 0;
+			this.equation.c = c;
+			this.equation.d = d;
+			this.equation.e = e;
+			this.equation.f = f;
+			this.equation.angle = (angle === undefined)?0:angle;
 		}
 	
 		this.setFromPoints = function(u){
@@ -176,6 +187,41 @@ var Ellipse = (function() {
 			this.equation.d = U[0][0]*ev[0] + U[0][1]*ev[1] + U[0][2]*ev[2];
 			this.equation.e = U[1][0]*ev[0] + U[1][1]*ev[1] + U[1][2]*ev[2];
 			this.equation.f = U[2][0]*ev[0] + U[2][1]*ev[1] + U[2][2]*ev[2];
+		}
+		
+		this.convertToReducedEquation = function() {
+			var eq = this.equation;
+			var a = Math.atan(this.equation.b / (this.equation.a - this.equation.c))/2;
+			var s = Math.sin(a);
+			var c = Math.cos(a);
+			var old_a = this.equation.a;
+			var old_c = this.equation.c;
+			var old_d = this.equation.d;
+			var old_e = this.equation.e;
+			this.equation.a = old_a*c*c + old_b*c*s + old_c*s*s;
+			this.equation.b = 0;
+			this.equation.c = old_a*c*c - old_b*c*s + old_c*s*s;
+			this.equation.d = old_d*c + old_e*s;
+			this.equation.e = -old_d*c + old_e*s;
+			this.equation.angle = a;
+		}
+		
+		this.getAxisLength = function() {
+			var eq = this.equation;
+			if (eq.b > 1e-9) this.convertToReducedEquation();
+			var num = -4*eq.f*eq.a*eq.c + eq.c*eq.d*eq.d + eq.a*eq.e*eq.e;
+			return [Math.sqrt(num/(4*eq.a*eq.c*eq.c)),
+					Math.sqrt(num/(4*eq.a*eq.a*eq.c))];
+		}
+		
+		this.getCenter = function() {
+			var eq = this.equation;
+			if (eq.b > 1e-9) this.convertToReducedEquation();
+			var x = -0.5*eq.d/eq.a;
+			var y = -0.5*eq.e/eq.c;
+			var c = Math.cos(eq.angle);
+			var s = Math.sin(eq.angle);
+			return [x*c - y*s, x*s + y*s];
 		}
 	}
 	return my;
