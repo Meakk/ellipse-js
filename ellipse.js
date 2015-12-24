@@ -168,7 +168,7 @@ var Ellipse = (function() {
 			}, Infinity);
 			
 			//find eigenvector
-			var ev = nullspace(add(A, [[-l, 0, 0],[0, -l, 0],[0, 0, -l]])));
+			var ev = nullspace(add(A, [[-l, 0, 0],[0, -l, 0],[0, 0, -l]]));
 			
 			this.equation.a = ev[0];
 			this.equation.b = ev[1];
