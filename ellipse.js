@@ -202,7 +202,7 @@ var Ellipse = (function() {
 			this.equation.c = old_a*s*s - eq.b*c*s + old_c*c*c;
 			this.equation.d = old_d*c + old_e*s;
 			this.equation.e = -old_d*s + old_e*c;
-			this.equation.angle = Math.acos(c);
+			this.equation.angle = Math.acos(t)/2;
 			this.equation.b = 0;
 		}
 		
