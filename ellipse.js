@@ -229,12 +229,9 @@ var Ellipse = (function() {
 		
 		this.getCenter = function() {
 			var eq = this.equation;
-			if (Math.abs(eq.b) > 1e-9) this.convertToReducedEquation();
-			var x = -0.5*eq.d/eq.a;
-			var y = -0.5*eq.e/eq.c;
-			var c = Math.cos(eq.angle);
-			var s = Math.sin(eq.angle);
-			return [x*c - y*s, x*s + y*s];
+			var denom = eq.b*eq.b - 4*eq.a*eq.c;
+			return [(2*eq.c*eq.d - eq.b*eq.e)/denom,
+					(2*eq.a*eq.e - eq.d*eq.b)/denom];
 		}
 	}
 	return my;
