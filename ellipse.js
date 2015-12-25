@@ -198,17 +198,17 @@ var Ellipse = (function() {
 			var old_c = this.equation.c;
 			var old_d = this.equation.d;
 			var old_e = this.equation.e;
-			this.equation.a = old_a*c*c + old_b*c*s + old_c*s*s;
-			this.equation.b = 0;
-			this.equation.c = old_a*c*c - old_b*c*s + old_c*s*s;
+			this.equation.a = old_a*c*c + eq.b*c*s + old_c*s*s;
+			this.equation.c = old_a*s*s - eq.b*c*s + old_c*c*c;
 			this.equation.d = old_d*c + old_e*s;
-			this.equation.e = -old_d*c + old_e*s;
+			this.equation.e = -old_d*s + old_e*c;
 			this.equation.angle = a;
+			this.equation.b = 0;
 		}
 		
 		this.getAxisLength = function() {
 			var eq = this.equation;
-			if (eq.b > 1e-9) this.convertToReducedEquation();
+			if (Math.abs(eq.b) > 1e-9) this.convertToReducedEquation();
 			var num = -4*eq.f*eq.a*eq.c + eq.c*eq.d*eq.d + eq.a*eq.e*eq.e;
 			return [Math.sqrt(num/(4*eq.a*eq.c*eq.c)),
 					Math.sqrt(num/(4*eq.a*eq.a*eq.c))];
@@ -216,7 +216,7 @@ var Ellipse = (function() {
 		
 		this.getCenter = function() {
 			var eq = this.equation;
-			if (eq.b > 1e-9) this.convertToReducedEquation();
+			if (Math.abs(eq.b) > 1e-9) this.convertToReducedEquation();
 			var x = -0.5*eq.d/eq.a;
 			var y = -0.5*eq.e/eq.c;
 			var c = Math.cos(eq.angle);
