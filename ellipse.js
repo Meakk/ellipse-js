@@ -204,7 +204,7 @@ var Ellipse = (function() {
 		
 		this.convertToReducedEquation = function() {
 			var eq = this.equation;
-			var t = Math.atan(this.equation.b / (this.equation.a - this.equation.c))/2;
+			var t = Math.atan(this.equation.b / (this.equation.c - this.equation.a))/2;
 			var s = Math.sin(t);
 			var c = Math.cos(t);
 			var old_a = this.equation.a;
