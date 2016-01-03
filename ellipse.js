@@ -187,7 +187,7 @@ var Ellipse = (function() {
 			}, {cond:Infinity, err:true});
 
 			if (a1.err == undefined) {
-				var ev = a1[0].ev;
+				var ev = a1.ev;
 				this.equation.a = ev[0];
 				this.equation.b = ev[1];
 				this.equation.c = ev[2];
