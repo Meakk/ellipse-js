@@ -183,7 +183,7 @@ var Ellipse = (function() {
 			var a1 = eigVec.filter(function(e) {
 				return e.cond > 0;
 			}).reduce(function(p,c) {
-				return p.cond < c.cond ? c : p;
+				return p.cond < c.cond ? p : c;
 			}, {cond:Infinity, err:true});
 
 			if (a1.err == undefined) {
