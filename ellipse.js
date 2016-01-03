@@ -171,15 +171,25 @@ var Ellipse = (function() {
 			U = scale(U, -1);
 			var A = multiply(iC, add(S1, multiply(S2, U)));
 			
-			var eig = eigenvalues(A);
+			var eigVal = eigenvalues(A);
 			
-			//get minimal positive eigenvalue
-			var l = eig.reduce(function(p, c) {
-				return (c > 0 && c < p) ? c : p;
-			}, Infinity);
+			//eigenvectors
+			var eigVec = eigVal.map(function(l) {
+				var ev = nullspace(add(A, [[-l, 0, 0],[0, -l, 0],[0, 0, -l]]));
+				return {ev: ev, cond: 4*ev[2]*ev[0] - ev[1]*ev[1]};
+			});
 			
-			//find eigenvector
-			var ev = nullspace(add(A, [[-l, 0, 0],[0, -l, 0],[0, 0, -l]]));
+			//condition
+			var a1 = eigVec.filter(function(e) {
+				return e.cond > 0;
+			});
+			
+			if (a1.length == 1) {
+				var ev = a1[0].ev;
+			} else {
+				console.warn("Pb with eigenvectors, length = " + a1.length);
+				console.warn(eigVec);
+			}
 			
 			this.equation.a = ev[0];
 			this.equation.b = ev[1];
