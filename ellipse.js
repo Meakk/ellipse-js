@@ -182,21 +182,22 @@ var Ellipse = (function() {
 			//condition
 			var a1 = eigVec.filter(function(e) {
 				return e.cond > 0;
+			}).reduce(function(p,c) {
+				return p.cond < c.cond ? c : p;
 			});
-			
+
 			if (a1.length == 1) {
 				var ev = a1[0].ev;
+				this.equation.a = ev[0];
+				this.equation.b = ev[1];
+				this.equation.c = ev[2];
+				this.equation.d = U[0][0]*ev[0] + U[0][1]*ev[1] + U[0][2]*ev[2];
+				this.equation.e = U[1][0]*ev[0] + U[1][1]*ev[1] + U[1][2]*ev[2];
+				this.equation.f = U[2][0]*ev[0] + U[2][1]*ev[1] + U[2][2]*ev[2];
 			} else {
 				console.warn("Pb with eigenvectors, length = " + a1.length);
 				console.warn(eigVec);
 			}
-			
-			this.equation.a = ev[0];
-			this.equation.b = ev[1];
-			this.equation.c = ev[2];
-			this.equation.d = U[0][0]*ev[0] + U[0][1]*ev[1] + U[0][2]*ev[2];
-			this.equation.e = U[1][0]*ev[0] + U[1][1]*ev[1] + U[1][2]*ev[2];
-			this.equation.f = U[2][0]*ev[0] + U[2][1]*ev[1] + U[2][2]*ev[2];
 		}
 		
 		function printCoeff(x) {
